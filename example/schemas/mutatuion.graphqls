@@ -1,0 +1,6 @@
+type Mutation{
+    registerCompany(input:CreateCompany!):Company
+    registerEmployee(input:CreateEmployee!):Employee
+    createTask(input:CreateTask):Task
+    assignTask(task_id:Int!,employee_ids:[Int!]!):Task
+}

@@ -1,0 +1,8 @@
+type Task{
+	id:             ID!
+	name:           String!
+	description:    String
+	start_date:     Time!
+	end_date:       Time
+	employees:      [Employee!]!
+}

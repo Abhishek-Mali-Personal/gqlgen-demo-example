@@ -1,0 +1,62 @@
+scalar Time
+scalar Int64
+
+input FilterInput{
+    employee_name:          String
+    employee_designation:   String
+    task_name:              String
+    employee_email:         String
+    task_start_date:        Time
+    task_end_date:          Time  
+}
+
+input FilterCompanyInput{
+    employee_name:      String
+    company_name:       String
+    employee_email:     String
+    company_website:    String
+}
+
+input CreateCompany{
+	name:       String!     
+	website:    String
+}
+
+
+input CreateEmployee{
+    name:           String!
+	designation:    String!
+	email:          String!
+    company_id:     Int!
+}
+
+input CreateTask{
+    name:           String!
+	description:    String
+	start_date:     Time!
+	end_date:       Time
+    employee_ids:   [Int!]!
+}
+
+type TaskList{
+    tasks: [Task!]!
+}
+
+type EmployeeList{
+    employees: [Employee!]!
+}
+
+type CompanyList{
+    companies: [Company!]!
+}
+
+union ResultUnion = Task | Employee | TaskList | EmployeeList | Company | CompanyList
+
+type Pagination{
+    total_rows:     Int64!
+    total_pages:    Int!
+    page:           Int!
+    sort:           String!
+    limit:          Int!
+    rows:           ResultUnion
+}

@@ -1,0 +1,7 @@
+type Query{
+    employees(filter:FilterInput, page:Int = 1):Pagination
+    tasks(filter:FilterInput,page:Int=1):Pagination
+    companies(filter:FilterCompanyInput,page:Int=1):Pagination
+}
+
+

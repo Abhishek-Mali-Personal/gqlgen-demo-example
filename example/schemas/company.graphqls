@@ -1,0 +1,6 @@
+type Company{
+	id:         ID!        
+	name:       String!     
+	website:    String   
+	employees:  [Employee!]!
+}
