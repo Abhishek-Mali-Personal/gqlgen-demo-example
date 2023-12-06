@@ -26,25 +26,25 @@ The [gqlgen](https://gqlgen.com/) tool has a feature i.e., it generates document
 
 ### Getting Started with gqlgen 
 
-Before starting with how to use gqlgen tool for creating graphql based API application, I will highly recommend you read [GraphQL Documentation](https://graphql.org/learn/) if you don’t know the basics of graphql or datatypes graphql uses. Also, if you are new to GO language please refer to [Go Documentation](https://go.dev/learn/). 
+Before starting with how to use gqlgen tool for creating graphql based API application, I will highly recommend you read [GraphQL Documentation](https://graphql.org/learn/) if you don’t know the basics of graphql or data-types graphql uses. Also, if you are new to GO language please refer to [Go Documentation](https://go.dev/learn/). 
 
 So, let's start with brief overview of [graphql](https://graphql.org/),  the most basic component of [GraphQL](https://graphql.org/) schemas is object, which represents a kind of object you might want to fetch from your API or to be precise your service. Below is the representation of an object: 
 ```graphql
 type ObjectName {
-    # Int is the datatype of the variabe you can put '!' mark
-    # to make vaiable as required field.
+    # Int is the datatype of the variable you can put '!' mark
+    # to make variable as required field.
     Variable: Int
 }
 ```
-Next thing you want to know is about to special types, basically heart of [graphql](https://graphql.org/) without which you might not even run any API or service. Every [GraphQL](https://graphql.org/) service has query or mutatuion type. You might be thinking what so special about this type? So, these two types are used to call services which makes them heart of [GraphQL](https://graphql.org/). Query type is used for viewing data, if we compare to REST API it is same as GET query. 
+Next thing you want to know is about to special types, basically heart of [graphql](https://graphql.org/) without which you might not even run any API or service. Every [GraphQL](https://graphql.org/) service has query or mutation type. You might be thinking what so special about this type? So, these two types are used to call services which makes them heart of [GraphQL](https://graphql.org/). Query type is used for viewing data, if we compare to REST API it is same as GET query. 
 
-At this point you might get a question, where mutation type is used as query could easily do any processing of data as I am saying query type is same as GET request in REST API.  So, you might be aware of that it’s suggested by convention that one doesn’t use GET request for modification of any data similarly it goes for query. Hence, we use mutation for modification of data. 
+At this point you might get a question, where mutation type is used as query could easily do any processing of data as I am saying query type is same as GET request in REST API.  So, you might be aware of that it’s suggested by convention that one does not use GET request for modification of any data similarly it goes for query. Hence, we use mutation for modification of data. 
 
 Mutation also provides feature for inputting an object by creating custom object of input type, it is same as Object as shown above but instead of type keyword, we replace it with input. I will show you how to write query or mutation but for understanding how input are created below is the representation of input object:
 ```graphql
 input ObjectName {
     # It is actually an object but used for inputting
-    # in services called by any query or mutatuion type
+    # in services called by any query or mutation type
     Variable: Int
 }
 ```
@@ -93,7 +93,7 @@ example
 └── server.go 
 ```
 > Step 4: We will be creating our custom structure
-First of all we will adjust some files and create some directories before actually writting some code.
+First of all we will adjust some files and create some directories before actually writing some code.
 
 1. Create a directory *example/models* copy  **example/graph/model/model_gen.go** file to *example/models*.  
     It will look like this:
@@ -103,7 +103,7 @@ First of all we will adjust some files and create some directories before actual
     ├── models
     └── models_gen.go
     ```
-2. Create a directory *example/schema*  copy **example/graph/schmea.graphqls** file to *example/schemas*.  
+2. Create a directory *example/schema*  copy **example/graph/schema.graphqls** file to *example/schemas*.  
     It will look like this
     ```text
     example
@@ -238,32 +238,32 @@ example
 package models
 
 type Company struct {
-    ID        int         `gorm:"column:id;AUTO_INCREMENT;primaryKey;" json:"id"`
-    Name      string      `gorm:"column:name;type:varchar(255);not null;unique;" json:"name"`
-    Website   *string     `gorm:"column:website;type:varchar(255);unique;" json:"website,omitempty"`
-    Employees []*Employee `gorm:"foreignKey:CompanyID;references:ID;constraint:OnDelete:CASCADE;" json:"employees"`
+	ID        int         `gorm:"column:id;AUTO_INCREMENT;primaryKey;" json:"id"`
+	Name      string      `gorm:"column:name;type:varchar(255);not null;unique;" json:"name"`
+	Website   *string     `gorm:"column:website;type:varchar(255);unique;" json:"website,omitempty"`
+	Employees []*Employee `gorm:"foreignKey:CompanyID;references:ID;constraint:OnDelete:CASCADE;" json:"employees"`
 }
 
-// Used for Union Implementation 
+// IsResultUnion Used for Union Implementation 
 func (Company) IsResultUnion() {}
 ```
 
-2. Simmilarly create *Employee* and *Task* model inside *models/employee_model.go* and *models/tasks_model.go* respectively.
+2. Similarly create *Employee* and *Task* model inside *models/employee_model.go* and *models/tasks_model.go* respectively.
 
 ```go
 package models
 
 type Employee struct {
-    ID          int      `gorm:"column:id;AUTO_INCREMENT;primaryKey;" json:"id"`
-    Name        string   `gorm:"column:name;type:varchar(255);not null;unique;" json:"name"`
-    Designation string   `gorm:"column:designation;type:varchar(255);not null;" json:"designation"`
-    Email       string   `gorm:"column:email;type:varchar(255);not null;unique;" json:"email"`
-    CompanyID   int      `gorm:"column:company_id;not null;" json:"company_id"`
-    Company     *Company `json:"company,omitempty"`
-    Tasks       []*Task  `gorm:"many2many:employee_tasks;" json:"tasks,omitempty"`
+	ID          int      `gorm:"column:id;AUTO_INCREMENT;primaryKey;" json:"id"`
+	Name        string   `gorm:"column:name;type:varchar(255);not null;unique;" json:"name"`
+	Designation string   `gorm:"column:designation;type:varchar(255);not null;" json:"designation"`
+	Email       string   `gorm:"column:email;type:varchar(255);not null;unique;" json:"email"`
+	CompanyID   int      `gorm:"column:company_id;not null;" json:"company_id"`
+	Company     *Company `json:"company,omitempty"`
+	Tasks       []*Task  `gorm:"many2many:employee_tasks;" json:"tasks,omitempty"`
 }
 
-// Used for Union Implementation 
+// IsResultUnion Used for Union Implementation 
 func (Employee) IsResultUnion() {}
 ```
 
@@ -281,6 +281,7 @@ type Task struct {
     Employees   []*Employee `gorm:"many2many:employee_tasks;" json:"employees"`
 }
 
+// IsResultUnion Used for Union Implementation 
 func (Task) IsResultUnion() {}
 ```
 > Step 6: Now we will be creating types in graphql to bind above created objects
@@ -336,7 +337,7 @@ type Mutation{
     assignTask(task_id:Int!,employee_ids:[Int!]!):Task
 }
 ``` 
-3. The Final step we will be creating necessary Input Object and Response Structure needed both in query and mutatuion type by their services in schemas/schmea.graphqls
+3. The Final step we will be creating necessary Input Object and Response Structure needed both in query and mutation type by their services in schemas/schema.graphqls
 ```graphql
 scalar Time
 scalar Int64
@@ -400,7 +401,7 @@ type Pagination{
     rows:           ResultUnion
 }
 ```
- We are completed with creating services and schemas neccessary for running graphqls now its turn for generating our equivalent go codes. But before that we need to do changes in our gqlgen.yml file to bind our custom created models and create some custom resolvers as well.
+ We are completed with creating services and schemas necessary for running graphqls now its turn for generating our equivalent go codes. But before that we need to do changes in our gqlgen.yml file to bind our custom created models and create some custom resolvers as well.
 
  > Step 7: Updating gqlgen.yml
 
@@ -410,7 +411,7 @@ type Pagination{
 autobind:
  - "example/models"
 ```
-This will bind our custom created models with graphql model in short turining autobind on searches for the models in  the specified directory
+This will bind our custom created models with graphql model in short turning autobind on searches for the models in  the specified directory
 
 2. After updating auto bind we need to bind grqphqls models with custom models created in golang so we will update below models line for linking models also keep it in mind that we will be creating custom resolvers for all models so we will add resolvers true for all models.
 
@@ -482,9 +483,9 @@ Search for below line
 
  In this step I will not go deep by showing any logic instead I will just give you reference for which functions will be under which directory.
 
- I will create functions name same as auto created functions with same return values so you can identify in which resolver function needs to be called.
+ I will create functions name same as auto created functions with same return values, so you can identify in which resolver function needs to be called.
 
- But before that we will create a domain structure with following neccessary repositories that will also give you idea of which repositories are needed.
+ But before that we will create a domain structure with following necessary repositories that will also give you idea of which repositories are needed.
 
  ```go
 type Domain struct {
@@ -525,11 +526,11 @@ Below are the functions with its respective files:
 | task_domain.go    |  AssigntaskToEmployees|     AssignTask         |   mutaion_resolver.go   |
 | task_domain.go    |  RetrieveTasks        |     Tasks              |   query_resolver.go     |    
 
-You might have a question why create domain structure and create its functionality when we can directly implement logic in generated resolver files, yes you can directly implement logic in auto generated resolvers but there are some risks of doin it as it is auto generated your implmentation might get override when you regenerate the code.
+You might have a question why create domain structure and create its functionality when we can directly implement logic in generated resolver files, yes you can directly implement logic in auto generated resolvers but there are some risks of doing it as it is auto generated your implementation might get override when you regenerate the code.
 
-Think of a scenerio where you have written more than 50 lines of code and your implementation get override. Hence, I prefer creating a logic in different file although gqlgen tool gives us recvery optioin but why take chance its like prevention is better than cure. 
+Think of a scenario where you have written more than 50 lines of code and your implementation get override. Hence, I prefer creating a logic in different file although gqlgen tool gives us recovery option but why take chance its like prevention is better than cure. 
 
-Also if we implement our logic in different file would also give us some advantage as well where we want to create same application with some other technology for example REST API you can directly call this functions and no need to rewrite the whole code again for REST API as implementation logic will remain same.
+Also, if we implement our logic in different file would also give us some advantage as well where we want to create same application with some other technology for example REST API you can directly call this functions and no need to rewrite the whole code again for REST API as implementation logic will remain same.
 
 > Step 10: Add created domain to the resolvers in example/server.go file
 
@@ -548,11 +549,11 @@ srv := handler.NewDefaultServer(generated.NewExecutableSchema(generated.Config{R
         },
     }}))
 ```
-I am not showing you database implementaion neither how to call it in as I know you are smart enough to predict how I did that. So dont forget to add database implementation as I was using postgres I have added function in example/database/postgres/postgres.go file you can do the same for any DB Engines and call DB variable in main function
+I am not showing you database implementation neither how to call it in as I know you are smart enough to predict how I did that. So dont forget to add database implementation as I was using postgres I have added function in example/database/postgres/postgres.go file you can do the same for any DB Engines and call DB variable in main function
 
 > Step 10: Custom Resolvers Implementation
 
-A question might arrise why we need Custom Reolvers or What is the use of custom resolvers?
+A question might arise why we need Custom Resolvers or What is the use of custom resolvers?
 
 -> To answer this question, you need to recall one of the structure you have created earlier. I will take employee as an example
 
@@ -571,13 +572,13 @@ Here, you can see we have two sub objects that is Task which is in slice of Task
 
 What Resolver does is it simply fetches you the data of this sub objects or models based on the foreign key relation and the logic you provide.
 
-Yes, I know some of you might get a question why need of resolvers we can directly fetch it when we call our main query, yes you can do that but think of a scenerio where a sub object has many variables or a object has many objects, in this case database query would get too long and might not be a feasible option where a user only needs data for main object not for sub object.
+Yes, I know some of you might get a question why need of resolvers we can directly fetch it when we call our main query, yes you can do that but think of a scenario where a sub object has many variables or a object has many objects, in this case database query would get too long and might not be a feasible option where a user only needs data for main object not for sub object.
 
 You might ask then we can simply create a new service for fetching that data. Again my answer will be yes you can create that but thats the beauty of graphql you don't need to do that as custom resolver can solve that problem why call different queries when you can get data in same service.
 
 I hope now your doubt are clear, so moving on to implementation part of custom resolvers.
 
-I am using [DataLoaden library by vektah](https://github.com/vektah/dataloaden), you can use any thing is you want else directly write implementation logic in custom resolvers
+I am using [DataLoaden library by vektah](https://github.com/vektah/dataloaden), you can use anything is you want else directly write implementation logic in custom resolvers
 
 We need to create three data loaders i.e. for company, task and employee
 
@@ -590,10 +591,10 @@ Now for creating dataloaders, first of all I will give you a brief how to run it
 ```shell
 go run github.com/vektah/dataloaden CompanyLoader int '*example/models.Company'
 ```
-Above is the how you run dataloaden to get CompanyLoader
-The above command has 4 parts `go run github.com/vektah/dataloaden` line will run the dataloaden `CompanyLoader` is the name you want to give to your dataloader `int` is you can say is the primary key's datatype but infact it is the datatype of the variable which we will be using to fetch the Data of that Object and last  `*example/models.Company` is the datatype of the object or the object you want to return.
+Above is how you run dataloaden to get CompanyLoader
+The above command has 4 parts `go run github.com/vektah/dataloaden` line will run the dataloaden `CompanyLoader` is the name you want to give to your dataloader `int` is you can say is the primary key's datatype but in fact it is the datatype of the variable which we will be using to fetch the Data of that Object and last  `*example/models.Company` is the datatype of the object or the object you want to return.
 
-You have already seen the working of datatloaden so lets create data loader for all models.
+You have already seen the working of datatloaden so let's create data loader for all models.
 
 1. First of all go to dataloader directory
 ```shell
@@ -615,7 +616,7 @@ This command will generate dataloaders for all objects. That all you are done wi
 
 > Step 11: Adding a framework or router for using middleware
 
-I am using GIN Framework for using middleware, for simplicity but you can use any framework which uses http library.
+I am using GIN Framework for using middleware, for simplicity, but you can use any framework which uses http library.
 
 `Note that you cannot directly use framework which doesnot implement http library.`
 
@@ -871,7 +872,7 @@ You might be thinking we have created middleware which stores data loader but wh
 
 I will show you how to invoke  custom resolver only in one resolver as the way of invoking is very simple you might get it how to do the same for rest others.
 
-Lets take a simple example of laptop resolver to fetch Employees:
+Let's take a simple example of laptop resolver to fetch Employees:
 
 Go to example/generated/company_resolver.go, there you will see Employees Function just remove panic code and add below code
 
@@ -881,7 +882,7 @@ return dataloaders.GetEmployeeLoader(ctx, dataloaders.EmployeeLoaderByCompanyKey
 
 And that's it you are done with Laptop Resolver.
 
-Incase, you get stuck with any resolver below is the code for all rest resolvers,
+In-case, you get stuck with any resolver below is the code for all rest resolvers,
 
 ```go
 // example/generated/employee_resolver.go
@@ -907,7 +908,7 @@ To run our application simply run
 ```shell
 go run server.go
 ```
-In terminal you will get GraphQL Playground locally hosted link,
+In terminal, you will get GraphQL Playground locally hosted link,
 click on that link you will redirect on to a GraphQL Playground where you can perform all GraphQL related queries.
 
 First of all I will show you two different ways to call a Query or Mutation
@@ -989,7 +990,7 @@ query Companies($filter:FilterCompanyInput,$page:Int){
 ```
 
     
-   In the above function you can see the neat and clear query without any value added in the service called itself, instead passed values to the temporary vriables created by the service.
+   In the above function you can see the neat and clear query without any value added in the service called itself, instead passed values to the temporary variables created by the service.
 
    To add the values go to down to the Variables Tab and paste this Variables Code.
 
@@ -997,7 +998,7 @@ As you can see there is no difference in how you call the query, both does the s
 
 Now just for reference I will show you ho to invoke mutation service below is the example of it.
 ```graphql
-mutation RegisteCompany($input: CreateCompany!) {
+mutation RegisterCompany($input: CreateCompany!) {
   registerCompany(input: $input) {
     id
     name
@@ -1006,7 +1007,7 @@ mutation RegisteCompany($input: CreateCompany!) {
 }
 ```
 
-```graphql
+```json
 // Variable
 {
   "input": {
@@ -1017,6 +1018,6 @@ mutation RegisteCompany($input: CreateCompany!) {
 ```
 
 ### Conclusion
-In this article, we covered overview of what is [graphql](https://graphql.org/), creating [GraphQL](https://graphql.org/) using [gqlgen tool](https://gqlgen.com/) and [golang](https://gqlgen.com/). Also we learned different features of [gqlgen tool](https://gqlgen.com/), auto binding models created in [golang](https://gqlgen.com/) with [GraphQL](https://graphql.org/) types, creating custom resolvers useful for auto fetching sub-object's data, using **`UNION`** type demonstraing how pagination can be sent to response which can fetch you different object's data which reduces creating pagination type for all data differently and different wats to invoke graphql query. 
+In this article, we covered overview of what is [graphql](https://graphql.org/), creating [GraphQL](https://graphql.org/) using [gqlgen tool](https://gqlgen.com/) and [golang](https://gqlgen.com/). Also, we learned different features of [gqlgen tool](https://gqlgen.com/), auto binding models created in [golang](https://gqlgen.com/) with [GraphQL](https://graphql.org/) types, creating custom resolvers useful for auto fetching sub-object's data, using **`UNION`** type demonstrating how pagination can be sent to response which can fetch you different object's data which reduces creating pagination type for all data differently and different wats to invoke graphql query. 
 
 
