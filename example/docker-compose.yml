@@ -1,0 +1,28 @@
+version: '3'
+
+services:
+  gqlgen_app:
+    build: .
+    env_file:
+      - .env
+    environment:
+      - PORT=${PORT}
+      - DB_HOST=${DB_HOST}
+      - DB_PORT=${DB_PORT}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_NAME=${DB_NAME}
+      - PAGE_LIMIT=${PAGE_LIMIT}
+      - ORDER_BY=${ORDER_BY}
+    ports:
+      - ${PORT}:${PORT}
+    depends_on:
+      - database
+    network_mode: host
+    command: ./gqlgenExample
+  database:
+    image: postgres:latest
+    environment:
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_NAME}
