@@ -98,6 +98,7 @@ func main() {
 		AllowOrigins:     []string{"http://localhost:" + port},
 		AllowCredentials: true,
 	}))
+	fmt.Println("[GIN-debug] Blog Written on MEDIUM")
 	engine.POST("/query", graphqlHandler(DB))
 	engine.GET("/", playGroundHandler())
 	go fmt.Printf("[GIN-debug] Connect to http://localhost:%s/ for GraphQL playground\n", port)
